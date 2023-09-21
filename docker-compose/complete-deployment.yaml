@@ -20,4 +20,13 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
 
-
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: loka_minio
+      MINIO_ROOT_PASSWORD: myinitialsecretpassword
+    command: server /data
+    volumes:
+      # uncomment this if you'd like to specify where minio should store its data
+      # - /var/lib/minio/data:/data
