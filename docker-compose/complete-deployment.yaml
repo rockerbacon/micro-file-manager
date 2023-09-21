@@ -1,0 +1,23 @@
+# Complete application deployment,
+# with the core manager, external dependencies and extensions.
+#
+# Start with the command `docker compose -f complete-deployment.yaml up -d`.
+# Stop with the command `docker compose -f complete-deployment.yaml stop`.
+
+services:
+  postgresql:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: loka_postgres
+      POSTGRES_PASSWORD: myinitialsecretpassword
+      POSTGRES_DB: file_manager
+    volumes:
+      # uncomment this if you'd like to specify where postgres should store its data
+      # - /var/lib/postgresql/data:/var/lib/postgresql/data
+      # uncomment this if you'd like to set-up specific configuration on the host machine
+      # - /etc/postgresql:/config/sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+
+
