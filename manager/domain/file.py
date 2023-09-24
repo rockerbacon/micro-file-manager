@@ -8,7 +8,7 @@ class ReadableFile(ABC):
     """File whose contents may be read."""
 
     @abstractmethod
-    async def read(self, size: int) -> bytes:
+    def read(self, size: int) -> bytes:
         """Reads bytes from the file.
 
         Args:
@@ -19,20 +19,33 @@ class ReadableFile(ABC):
         """
         pass
 
+    @abstractmethod
+    def get_size(self) -> int:
+        """Returns the number of bytes in the file.
+
+        Returns:
+            The number of bytes in the file.
+        """
+        pass
+
 
 class FileMetadata:
     """Data about a file."""
 
-    def __init__(self, name: str, mime_type: str, description: str | None = None):
+    def __init__(
+        self, name: str, mime_type: str, size: int, description: str | None = None
+    ):
         """Constructs a new instance with the provided information.
 
         Args:
             name: The name of the file.
             mime_type: String specifying the file's IANA MIME type.
+            size: The length of the file's contents in bytes.
             description: Optional file description.
         """
         self._name = name
         self._mime_type = mime_type
+        self._size = size
         self._description = description
 
     def get_description(self) -> str | None:
@@ -61,3 +74,11 @@ class FileMetadata:
             A string specifying the file's IANA MIME type.
         """
         return self._mime_type
+
+    def get_size(self) -> int:
+        """Returns the number of bytes in the file.
+
+        Returns:
+            The number of bytes in the file.
+        """
+        return self._size

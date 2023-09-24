@@ -37,8 +37,9 @@ class MixedFilesystem(Filesystem):
             metadata: The file metadata.
             contents: The file contents themselves.
         """
+        # FIXME this is an overly optimistic implementation,
+        # there are use cases which aren't properly covered here
         id = metadata.get_filename()
-        # TODO check existing metadata before moving to the file upload
         await asyncio.gather(
             self._metaDB.save(id, metadata), self._contentDB.save(id, contents)
         )

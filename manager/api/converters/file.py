@@ -10,6 +10,10 @@ from domain.file import FileMetadata, ReadableFile
 from fastapi import UploadFile
 
 
+def _get_size(file: UploadFile) -> int:
+    return file.size or 0
+
+
 class ReadableUploadFileAdapter(ReadableFile):
     """Allows UploadFile to be used as a ReadableFile."""
 
@@ -17,9 +21,13 @@ class ReadableUploadFileAdapter(ReadableFile):
         """Wraps the UploadFile instance."""
         self._file = upload_file
 
-    async def read(self, size: int) -> bytes:
+    def read(self, size: int) -> bytes:
         """Reads from the original UploadFile."""
-        return await self._file.read(size)
+        return self._file.file.read(size)
+
+    def get_size(self) -> int:
+        """Gets the size of the temporary file."""
+        return _get_size(self._file)
 
 
 def extract_metadata(
@@ -45,7 +53,10 @@ def extract_metadata(
         raise Exception("Missing file content type")
 
     return FileMetadata(
-        upload_file.filename, upload_file.content_type, description=description_header
+        upload_file.filename,
+        upload_file.content_type,
+        _get_size(upload_file),
+        description=description_header,
     )
 
 
