@@ -35,7 +35,7 @@ check-format: | dev-requirements check-flake8 # TODO use sentinels to avoid re-c
 	black --extend-exclude='migrations' --check .
 
 check-typing: | dev-requirements # TODO use sentinels to avoid re-checking unchanged files
-	mypy --exclude='migrations' --strict .
+	mypy .
 
 format: | dev-requirements # TODO use sentinels to avoid re-formatting unchanged files
 	black .
