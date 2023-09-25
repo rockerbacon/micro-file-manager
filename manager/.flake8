@@ -1,0 +1,3 @@
+[flake8]
+# ensure black and flake8 utilize the same line length value
+max-line-length = 88

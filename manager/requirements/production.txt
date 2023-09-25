@@ -1,0 +1,7 @@
+fastapi==0.103.1
+minio==7.1.16
+psycopg2==2.9.7
+python-dotenv==1.0.0
+python-multipart==0.0.6
+SQLAlchemy==2.0.21
+uvicorn==0.23.2
