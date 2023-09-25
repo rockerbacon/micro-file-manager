@@ -7,7 +7,7 @@ router = APIRouter(prefix="/health")
 
 
 @router.get("")
-def get() -> Response:
+async def get() -> Response:
     """Confirms server is ready to handle requests.
 
     Returns:
