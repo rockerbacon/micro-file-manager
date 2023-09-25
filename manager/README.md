@@ -29,12 +29,12 @@ This section focuses on briefly describing the software architecture and showing
 The project loosely follows a [ports and adapters](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)) architectural pattern, with the main goal of avoiding coupling between the application and database technologies (PostgreSQL, MinIO).
 
 For those familiar with the aforementioned pattern, a simple summary of the file structure is:
-    - The `domain` folder is self-explanatory and contains the application domain
-    - The `database` folder contains adapters for different database technologies
-    - The `interfaces` folder contains:
-        - Ports for domain - database communication
-        - Ports for API - domain communication
-    - The `api` folder contains an adapter for accessing the domain through the HTTP protocol
+- The `domain` folder is self-explanatory and contains the application domain
+- The `database` folder contains adapters for different database technologies
+- The `interfaces` folder contains:
+    - Ports for domain - database communication
+    - Ports for API - domain communication
+- The `api` folder contains an adapter for accessing the domain through the HTTP protocol
 
 ## Code Standards
 This project enforces some code standards and includes automation tools for all of them. Developers can access these through make rules:
