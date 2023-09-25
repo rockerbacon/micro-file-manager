@@ -2,8 +2,6 @@
 
 
 import asyncio
-from database.postgresql.metadb import PostgreSQLMetaDB
-from database.minio.contentdb import MinIOContentDB
 from .file import FileMetadata, ReadableFile
 from interfaces.contentdb import ContentDB
 from interfaces.filesystem import Filesystem
@@ -43,6 +41,3 @@ class MixedFilesystem(Filesystem):
         await asyncio.gather(
             self._metaDB.save(id, metadata), self._contentDB.save(id, contents)
         )
-
-
-fs: Filesystem = MixedFilesystem(PostgreSQLMetaDB(), MinIOContentDB())
