@@ -1,12 +1,14 @@
 """Interfaces for file metadata databases."""
 
 
+from abc import ABC, abstractmethod
 from domain.file import FileMetadata
 
 
-class MetaDB:
+class MetaDB(ABC):
     """Interface describing a database for file metadata."""
 
+    @abstractmethod
     async def save(self, id: str, metadata: FileMetadata) -> None:
         """Persists file metadata under the specified unique identifier.
 

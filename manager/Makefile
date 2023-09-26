@@ -48,4 +48,5 @@ postgres-upgrade: | dev-requirements
 	alembic upgrade head
 
 test: | dev-requirements
-	python -m unittest discover --verbose -t . -s ./tests/unit -p '*.py'
+	coverage run -m unittest discover --verbose -t . -s ./tests/unit -p '*.py'
+	coverage report --show-missing --fail-under=100

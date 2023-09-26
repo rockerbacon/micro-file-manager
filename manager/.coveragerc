@@ -1,0 +1,33 @@
+[run]
+source = .
+
+omit =
+	# Omitted to keep coverage output cleaner.
+	# Remove this whenever any __init__.py includes any amount of code.
+	__init__.py
+
+	# These only define connections and configurations to external databases.
+	# There's little to no value in automating tests for these when
+	# we're only automating unit tests.
+	database/minio/client.py
+	database/postgresql/engine.py
+	database/postgresql/models/*
+	factories/contentdb.py
+	factories/filesystem.py
+	factories/metadb.py
+
+	# These only initialize FastAPI.
+	# There's little to no value in automating tests for these when
+	# we're only automating unit tests.
+	main.py
+	api/server.py
+
+	# We don't test the tests
+	tests/*
+
+	# We don't test migrations
+	migrations/*
+
+[report]
+exclude_also =
+	@(abc\.)?abstractmethod
