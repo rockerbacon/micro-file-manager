@@ -31,7 +31,7 @@ dev-requirements: .sentinels/setup-dev-env | virtualenv
 check-flake8:
 	flake8 --extend-exclude='migrations,tests' --docstring-convention google .
 	# don't require docstrings on tests
-	flake8 --extend-ignore=D100,D101,D102,D104,D107 tests
+	flake8 --extend-ignore=D100,D101,D102,D103,D104,D107 tests
 
 check-format: | dev-requirements check-flake8 # TODO use sentinels to avoid re-checking unchanged files
 	black --extend-exclude='migrations' --check .
