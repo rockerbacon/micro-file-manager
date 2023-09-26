@@ -4,7 +4,7 @@
 import asyncio
 from .client import minio_client
 from domain.file import ReadableFile
-from env import env
+from factories.env import get_env
 from interfaces.contentdb import ContentDB
 from minio import Minio
 
@@ -12,7 +12,9 @@ from minio import Minio
 class MinIOContentDB(ContentDB):
     """Database for managing file contents in MinIO."""
 
-    def __init__(self, bucket: str = env.MINIO_BUCKET, client: Minio = minio_client):
+    def __init__(
+        self, bucket: str = get_env().MINIO_BUCKET, client: Minio = minio_client
+    ):
         """Initializes a ContentDB for managing file contents in MinIO.
 
         Args:

@@ -1,9 +1,12 @@
 """Engine."""
 
 
-from env import env
+from factories.env import get_env
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
+
+env = get_env()
 
 
 def get_connection_uri() -> str:

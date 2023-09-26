@@ -5,11 +5,11 @@ Typical usage example:
 """
 
 
-from dotenv import dotenv_values
-import os
+from environment.reader import EnvironmentReader
+from typing import Optional
 
 
-class Environment:
+class AppEnvironment:
     """Relevant environment variables."""
 
     MINIO_BUCKET: str
@@ -25,15 +25,10 @@ class Environment:
     POSTGRESQL_PORT: int
     POSTGRESQL_USER: str
 
-    def _load_dotfile(self) -> None:
-        self._dotfile = dotenv_values(".env")
-
-    def _load_external_value(self, variable: str) -> str | None:
-        if variable in os.environ:
-            return os.environ[variable]
-
-        if variable in self._dotfile:
-            return self._dotfile[variable]
+    def _load_external_value(self, variable: str) -> Optional[str]:
+        for env in self._environments:
+            if env.has(variable):
+                return env.get(variable)
 
         return None
 
@@ -66,17 +61,25 @@ class Environment:
 
         return default
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        processReader: EnvironmentReader,
+        envFileReader: EnvironmentReader,
+    ) -> None:
         """Loads environment variables.
 
         Variables are first read from the process environment.
         Variables not specified in the process environment will be
-        read from a .env file in the current working directory.
+        read from the environment file.
 
         If a variable is not specified anywhere,
         a default value for a local environment will be used.
+
+        Args:
+            processReader: Reader of the process environment.
+            envFileReader: Reader of the environment file.
         """
-        self._load_dotfile()
+        self._environments = [processReader, envFileReader]
 
         self.MINIO_BUCKET = self._load_str(
             "MINIO_BUCKET", "micro-file-manager-contents"
@@ -92,6 +95,3 @@ class Environment:
         self.POSTGRESQL_PASSWORD = self._load_str("POSTGRESQL_PASSWORD", "postgres")
         self.POSTGRESQL_PORT = self._load_int("POSTGRESQL_PORT", 5432)
         self.POSTGRESQL_USER = self._load_str("POSTGRESQL_USER", "postgres")
-
-
-env = Environment()

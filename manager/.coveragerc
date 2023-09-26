@@ -7,7 +7,7 @@ omit =
 	__init__.py
 
 	# These only define connections and configurations to external databases.
-	# There's little to no value in automating tests for these when
+	# There's little to no value in automating tests for them when
 	# we're only automating unit tests.
 	database/minio/client.py
 	database/postgresql/engine.py
@@ -21,6 +21,13 @@ omit =
 	# we're only automating unit tests.
 	main.py
 	api/server.py
+
+	# These depend on the processes environment and external files.
+	# There's little to no value in automating tests for them when
+	# we're only automating unit tests.
+	environment/process.py
+	environment/envfile.py
+	factories/env.py
 
 	# We don't test the tests
 	tests/*
