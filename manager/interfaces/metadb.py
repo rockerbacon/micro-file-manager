@@ -15,5 +15,9 @@ class MetaDB(ABC):
         Args:
             id: The unique file identifier.
             metadata: The metadata to be persisted.
+
+        Raises:
+            FileAlreadyExistsError: Metadata for the specified id already
+            exists in the database.
         """
         pass

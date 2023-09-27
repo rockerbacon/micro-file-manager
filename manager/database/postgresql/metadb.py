@@ -4,8 +4,11 @@
 from datetime import datetime
 from domain.file import FileMetadata
 from .engine import Session
+from exceptions.file import FileAlreadyExistsError
 from interfaces.metadb import MetaDB
 from .models.file_metadata import FileMetadataModel
+from psycopg2.errors import UniqueViolation
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
 from typing import Any
 
@@ -27,13 +30,23 @@ class PostgreSQLMetaDB(MetaDB):
         Args:
             id: The unique file identifier.
             metadata: The metadata to be persisted.
+
+        Raises:
+            FileAlreadyExistsError: Metadata for the specified id already
+            exists in the database.
         """
-        with self._sessionmaker.begin() as session:
-            session.add(
-                FileMetadataModel(
-                    created_at=datetime.now(),
-                    description=metadata.get_description(),
-                    mime_type=metadata.get_mime_type(),
-                    name=metadata.get_filename(),
+        try:
+            with self._sessionmaker.begin() as session:
+                session.add(
+                    FileMetadataModel(
+                        created_at=datetime.now(),
+                        description=metadata.get_description(),
+                        mime_type=metadata.get_mime_type(),
+                        name=metadata.get_filename(),
+                    )
                 )
-            )
+        except IntegrityError as e:
+            if isinstance(e.orig, UniqueViolation):
+                raise FileAlreadyExistsError()
+            else:
+                raise e
