@@ -1,8 +1,11 @@
 """MinIO client configuration."""
 
 
-from env import env
+from factories.env import get_env
 from minio import Minio
+
+
+env = get_env()
 
 
 def _get_uri() -> str:

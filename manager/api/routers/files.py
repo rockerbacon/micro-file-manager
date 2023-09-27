@@ -2,11 +2,12 @@
 
 from api.converters.file import extract_content, extract_metadata
 from api.responses.file import FileResponseMetadata
-from domain.filesystem import fs
+from factories.filesystem import get_filesystem
 from fastapi import APIRouter, Header, Response, status, UploadFile
 from typing import Annotated
 
 
+fs = get_filesystem()
 router = APIRouter(prefix="/files")
 
 

@@ -2,6 +2,7 @@
 
 
 from abc import ABC, abstractmethod
+from typing import Optional
 
 
 class ReadableFile(ABC):
@@ -33,7 +34,7 @@ class FileMetadata:
     """Data about a file."""
 
     def __init__(
-        self, name: str, mime_type: str, size: int, description: str | None = None
+        self, name: str, mime_type: str, size: int, description: Optional[str] = None
     ):
         """Constructs a new instance with the provided information.
 
@@ -48,7 +49,7 @@ class FileMetadata:
         self._size = size
         self._description = description
 
-    def get_description(self) -> str | None:
+    def get_description(self) -> Optional[str]:
         """Returns the file's description.
 
         Returns:

@@ -8,6 +8,7 @@ Typical usage example:
 
 from domain.file import FileMetadata, ReadableFile
 from fastapi import UploadFile
+from typing import Optional
 
 
 def _get_size(file: UploadFile) -> int:
@@ -31,7 +32,7 @@ class ReadableUploadFileAdapter(ReadableFile):
 
 
 def extract_metadata(
-    upload_file: UploadFile, description_header: str | None
+    upload_file: UploadFile, description_header: Optional[str]
 ) -> FileMetadata:
     """Extracts relevant metadata from a fastAPI file.
 
