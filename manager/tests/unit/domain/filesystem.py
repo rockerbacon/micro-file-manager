@@ -1,5 +1,6 @@
 from domain.file import FileMetadata, ReadableFile
 from domain.filesystem import MixedFilesystem
+from exceptions.file import FileAlreadyExistsError
 from interfaces.contentdb import ContentDB
 from interfaces.metadb import MetaDB
 from unittest import IsolatedAsyncioTestCase, main
@@ -51,6 +52,13 @@ class TestMixedFilesystem_Save(IsolatedAsyncioTestCase):
         await self.fs.save(self.file_metadata, self.file_contents)
         self.metaDB.save_mock.assert_called_with("test_file.txt", self.file_metadata)
         self.contentDB.save_mock.assert_called_with("test_file.txt", self.file_contents)
+
+    async def test_should_fail_when_file_of_same_name_already_exists(self) -> None:
+        self.metaDB.save_mock.side_effect = FileAlreadyExistsError()
+        with self.assertRaises(FileAlreadyExistsError):
+            await self.fs.save(self.file_metadata, self.file_contents)
+        self.metaDB.save_mock.assert_called_with("test_file.txt", self.file_metadata)
+        self.contentDB.save_mock.assert_not_called()
 
 
 if __name__ == "__main__":

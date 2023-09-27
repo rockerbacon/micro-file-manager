@@ -1,7 +1,8 @@
 """Files router module."""
 
 from api.converters.file import extract_content, extract_metadata
-from api.responses.file import FileResponseMetadata
+from api.responses.file import FileAlreadyExistsResponse, FileResponseMetadata
+from exceptions.file import FileAlreadyExistsError
 from factories.filesystem import get_filesystem
 from fastapi import APIRouter, Header, Response, status, UploadFile
 from typing import Annotated
@@ -23,6 +24,9 @@ async def post(
     metadata = extract_metadata(file, x_description)
     content = extract_content(file)
 
-    await fs.save(metadata, content)
+    try:
+        await fs.save(metadata, content)
 
-    return FileResponseMetadata(metadata, status_code=status.HTTP_201_CREATED)
+        return FileResponseMetadata(metadata, status_code=status.HTTP_201_CREATED)
+    except FileAlreadyExistsError:
+        return FileAlreadyExistsResponse()
